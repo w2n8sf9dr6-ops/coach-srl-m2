@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # --- CONFIGURATION API GEMINI ---
-genai.configure(api_key="TON_API_KEY_GEMINI")
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # --- INITIALISATION DE LA SESSION ---
