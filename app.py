@@ -86,11 +86,11 @@ with tab_chat:
         with st.chat_message("user"):
             st.markdown(prompt)
 
+     # Réponse de l'IA en streaming (affichage instantané)
         with st.chat_message("assistant"):
-            with st.spinner("Le coach réfléchit..."):
-                response = st.session_state.chat_session.send_message(prompt)
-                ai_response = response.text
-                st.markdown(ai_response)
+            response = st.session_state.chat_session.send_message(prompt, stream=True)
+            # st.write_stream affiche le texte au fur et à mesure qu'il est généré
+            ai_response = st.write_stream(chunk.text for chunk in response)
                 
         st.session_state.messages.append({"role": "assistant", "content": ai_response})
 
