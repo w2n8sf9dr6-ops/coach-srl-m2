@@ -37,8 +37,8 @@ if prompt := st.chat_input("Écris ton message ici..."):
             # Appel direct et ultra-rapide sans fioritures
             history = [{"role": "system", "content": "Tu es un coach socratique bienveillant en autorégulation des apprentissages (SRL). Aide l'étudiant à réfléchir par lui-même."}] + st.session_state.messages
             
-            stream = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
+    stream = client.chat.completions.create(
+                model="llama3-70b-8192", 
                 messages=history,
                 stream=True
             )
