@@ -86,14 +86,18 @@ with tab_chat:
         with st.chat_message("user"):
             st.markdown(prompt)
 
-     # Réponse de l'IA en streaming (affichage instantané)
+    # Réponse de l'IA en streaming avec gestion des quotas
         with st.chat_message("assistant"):
-            response = st.session_state.chat_session.send_message(prompt, stream=True)
-            # st.write_stream affiche le texte au fur et à mesure qu'il est généré
-            ai_response = st.write_stream(chunk.text for chunk in response)
-                
-        st.session_state.messages.append({"role": "assistant", "content": ai_response})
-
+            try:
+                response = st.session_state.chat_session.send_message(prompt, stream=True)
+                ai_response = st.write_stream(chunk.text for chunk in response)
+                st.session_state.messages.append({"role": "assistant", "content": ai_response})
+            except Exception as e:
+                if "429" in str(e) or "ResourceExhausted" in str(e):
+                    st.warning("⚠️ Le coach reçoit trop de messages d'un coup (limite du plan gratuit Google). Patiente 10 secondes et réessaie !")
+                else:
+                    st.error(f"Une erreur est survenue : {e}")
+                    
 # ==========================================
 # ONGLET 2 : PROGRAMMATION & ORGANISATION
 # ==========================================
